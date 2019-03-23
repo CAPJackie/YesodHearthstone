@@ -7,13 +7,13 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
+/home HomeR GET POST
 
 /comments CommentR POST
 
 /profile ProfileR GET
 
-/deckList DeckListR GET
+/ DeckListR GET
 
 /deckNew DeckNewR GET POST
 
