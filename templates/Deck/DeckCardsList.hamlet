@@ -1,0 +1,27 @@
+<div>
+<h1> Card List
+$if null cards
+    <p> There are no cards in this deck yet.
+$else
+    <table .table .table-responsive .table-hover>
+        <thead>
+                     <th> Name
+                     <th> Cost             
+                     <th> Attack
+                     <th> Health
+                     <th> Text
+          
+        $forall Entity cardId card <- cards
+                        
+            <tbody>
+                <tr>
+                    <td> 
+                        #{cardName card}
+                    <td>
+                        #{cardCost card}
+                    <td>
+                        #{cardAttack card}
+                    <td>
+                        #{cardHealth card}
+                    <td>
+                        #{cardText card}

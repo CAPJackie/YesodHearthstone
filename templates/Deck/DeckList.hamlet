@@ -1,0 +1,30 @@
+<div>
+
+<h1> DECK
+$if null decks
+    <p> There are no decks available.
+$else
+    <table .table .table-responsive .table-hover>
+        <thead>
+                     <th> Name
+                     <th> Cards              
+                     <th> Edit
+          
+        $forall Entity deckId deck <- decks
+                        
+            <tbody>
+                <tr>
+                    <td> 
+                        #{deckName deck}
+                    <td>
+                        <a href=@{DeckListCardsR deckId} .btn .btn-warning .pull-center> 
+                          <span .glyphicon .glyphicon-edit>
+                          List cards
+                    <td>
+                       <a href=@{DeckNewCardR deckId} .btn .btn-warning .pull-right> 
+                          <span .glyphicon .glyphicon-edit>
+                          add Card
+
+<a  href=@{DeckNewR} .btn .btn-primary .pull-right>
+                              <span .glyphicon .glyphicon-plus>
+                              create new Deck
