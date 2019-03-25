@@ -1,0 +1,3 @@
+var dropList = document.getElementById("categoryDropList");
+var selectedValue = dropList.options[dropList.selectedIndex].value;
+console.log(selectedValue);

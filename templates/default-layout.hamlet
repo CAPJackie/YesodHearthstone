@@ -23,7 +23,7 @@
 <!-- Page Contents -->
 
 <div .container>
-    $if not $ Just HomeR == mcurrentRoute
+    $if not $ Just DeckListR == mcurrentRoute
         <ul .breadcrumb>
             $forall bc <- parents
                 <li>
@@ -35,7 +35,7 @@
       <div .alert.alert-info #message>#{msg}
 
 
-$if (Just HomeR == mcurrentRoute)
+$if (Just DeckListR == mcurrentRoute)
     ^{widget}
 $else
     <div .container>

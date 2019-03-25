@@ -25,6 +25,9 @@ cardForm did card = Card
                             <*> areq intField "health" (cardHealth <$> card)
                             <*> areq textField "text" (cardText <$> card)
 
+searchForm :: AForm Handler()
+searchForm = 
+
 getDeckNewR :: Handler Html
 getDeckNewR = do
     (widget, encoding) <- generateFormPost $ renderBootstrap3 BootstrapBasicForm $ deckForm Nothing
@@ -83,3 +86,15 @@ getDeckListCardsR deckId = do
 selectCardsByDeckId :: DeckId -> Handler [Entity Card]
 selectCardsByDeckId deckId = runDB $ rawSql s [toPersistValue deckId]
     where s = "SELECT distinct ?? FROM deck, card WHERE card.deck_id = ?"
+
+
+postCardSearchR :: Handler Html
+postCardSearchR = do
+    ((result,widget), encoding) <- runFormPost $ renderBootstrap3 BootstrapBasicForm $ searchForm
+    case result of
+        FormSuccess card -> do
+            _ <- runDB $ insert card
+            redirect DeckListR
+        _ -> defaultLayout $ do
+            let actionR = CardSearchR
+            $(widgetFile "Deck/CardCreate")

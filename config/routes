@@ -7,12 +7,6 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/home HomeR GET POST
-
-/comments CommentR POST
-
-/profile ProfileR GET
-
 / DeckListR GET
 
 /deckNew DeckNewR GET POST
@@ -20,3 +14,5 @@
 /deckNewCard/#DeckId DeckNewCardR GET POST
 
 /deckListCards/#DeckId DeckListCardsR GET
+
+/cardSearch CardSearchR POST
