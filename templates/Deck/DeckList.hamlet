@@ -21,34 +21,10 @@ $else
                           <span .glyphicon .glyphicon-edit>
                           List cards
                     <td>
-                       <a href=@{DeckNewCardR deckId} .btn .btn-warning .pull-center> 
+                       <a href=@{DeckNewCardR deckId} .btn .btn-warning .pull-right> 
                           <span .glyphicon .glyphicon-edit>
                           add Card
 
-<a  href=@{DeckNewR} .btn .btn-primary .pull-center>
+<a  href=@{DeckNewR} .btn .btn-primary .pull-right>
                               <span .glyphicon .glyphicon-plus>
                               create new Deck
-
-<div>
-    <h1> Search
-    <form method=post action=@{actionR} encType=#{encoding}>
-        <p>
-            <strong>
-                Card's category
-        <select id="categoryDropList">
-            <option value="name">
-                Name
-            <option value="cost">
-                Cost
-            <option value="attack">
-                Attack
-            <option value="health">
-                Health
-            <option value="text">
-                Text
-        ^{widget}
-        <button href=@{DeckListR} .btn .btn-default> Search card
-
-
-    
-    

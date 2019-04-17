@@ -163,6 +163,8 @@ instance Yesod App where
     isAuthorized DeckNewR _ = return Authorized
     isAuthorized (DeckNewCardR _ ) _ = return Authorized
     isAuthorized (DeckListCardsR _ ) _ = return Authorized
+    isAuthorized CardsJsonR _ = return Authorized
+    isAuthorized (CardJsonR _ ) _ = return Authorized
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows

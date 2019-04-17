@@ -15,4 +15,9 @@
 
 /deckListCards/#DeckId DeckListCardsR GET
 
-/cardSearch CardSearchR POST
+
+
+
+/cardsJson CardsJsonR GET POST
+/cardJson/#CardId CardJsonR GET PUT DELETE
+
