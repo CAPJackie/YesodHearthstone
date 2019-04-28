@@ -25,6 +25,8 @@ import Yesod.Core.Types     (Logger)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
+import qualified Data.List as L
+import Yesod.Auth.OAuth2.Google
 
 -- | The foundation datatype for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -159,12 +161,12 @@ instance Yesod App where
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
-    isAuthorized DeckListR _ = return Authorized
-    isAuthorized DeckNewR _ = return Authorized
-    isAuthorized (DeckNewCardR _ ) _ = return Authorized
-    isAuthorized (DeckListCardsR _ ) _ = return Authorized
-    isAuthorized CardsJsonR _ = return Authorized
-    isAuthorized (CardJsonR _ ) _ = return Authorized
+    isAuthorized DeckListR _ = authorizedForPrivileges [PrvDemoOne]
+    isAuthorized DeckNewR _ = authorizedForPrivileges [PrvDemoOne]
+    isAuthorized (DeckNewCardR _ ) _ = authorizedForPrivileges [PrvDemoOne]
+    isAuthorized (DeckListCardsR _ ) _ = authorizedForPrivileges [PrvDemoOne]
+    isAuthorized CardsJsonR _ = authorizedForPrivileges [PrvDemoOne]
+    isAuthorized (CardJsonR _ ) _ = authorizedForPrivileges [PrvDemoOne]
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -247,13 +249,31 @@ instance YesodAuth App where
             Nothing -> Authenticated <$> insert User
                 { userIdent = credsIdent creds
                 , userPassword = Nothing
+                , userPerms = []
                 }
 
     -- You can add other plugins like Google Email, email or OAuth here
     authPlugins :: App -> [AuthPlugin App]
-    authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
-        -- Enable authDummy login if enabled.
-        where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
+    authPlugins app = [oauth2GoogleScoped ["email", "profile"] clientId clientSecret]
+
+
+
+
+
+authorizedForPrivileges :: [Privileges] -> Handler AuthResult
+authorizedForPrivileges perms = do
+    mu <- maybeAuth
+    return $ case mu of
+        Nothing -> Unauthorized "You must login to access this page"
+        Just u@(Entity userId user) ->
+            if hasPrivileges u perms
+                then Authorized
+                else Unauthorized "Not enought priviledges"
+
+
+hasPrivileges :: Entity User -> [Privileges] -> Bool
+hasPrivileges (Entity _ user) perms = null (perms L.\\ userPerms user)
+            
 
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
@@ -288,3 +308,11 @@ unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
 -- https://github.com/yesodweb/yesod/wiki/Sending-email
 -- https://github.com/yesodweb/yesod/wiki/Serve-static-files-from-a-separate-domain
 -- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding
+
+-- Replace with Google client ID.
+clientId :: Text
+clientId = "233640648820-tcvi8d19hk0mp7lbs84a6mdogqvv3s7m.apps.googleusercontent.com"
+
+-- Replace with Google secret ID.
+clientSecret :: Text
+clientSecret = "V0Ktb9ZIM7Wk8UxzazKGOQ-m"
