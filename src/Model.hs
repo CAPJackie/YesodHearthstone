@@ -46,8 +46,7 @@ instance FromJSON Card where
 
 
 data Privileges =
-    PrvDemoOne         -- ^ what can be demo one...
-    | PrvDemoTwo       -- ^ what can be demo two...
+    PrvRegisteredUser
     deriving (Show,Read,Eq)
     
 derivePersistField "Privileges"

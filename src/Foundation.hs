@@ -161,12 +161,12 @@ instance Yesod App where
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
-    isAuthorized DeckListR _ = authorizedForPrivileges [PrvDemoOne]
-    isAuthorized DeckNewR _ = authorizedForPrivileges [PrvDemoOne]
-    isAuthorized (DeckNewCardR _ ) _ = authorizedForPrivileges [PrvDemoOne]
-    isAuthorized (DeckListCardsR _ ) _ = authorizedForPrivileges [PrvDemoOne]
-    isAuthorized CardsJsonR _ = authorizedForPrivileges [PrvDemoOne]
-    isAuthorized (CardJsonR _ ) _ = authorizedForPrivileges [PrvDemoOne]
+    isAuthorized DeckListR _ = return Authorized
+    isAuthorized DeckNewR _ = authorizedForPrivileges [PrvRegisteredUser]
+    isAuthorized (DeckNewCardR _ ) _ = authorizedForPrivileges [PrvRegisteredUser]
+    isAuthorized (DeckListCardsR _ ) _ = authorizedForPrivileges [PrvRegisteredUser]
+    isAuthorized CardsJsonR _ = authorizedForPrivileges [PrvRegisteredUser]
+    isAuthorized (CardJsonR _ ) _ = authorizedForPrivileges [PrvRegisteredUser]
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -272,7 +272,7 @@ authorizedForPrivileges perms = do
 
 
 hasPrivileges :: Entity User -> [Privileges] -> Bool
-hasPrivileges (Entity _ user) perms = null (perms L.\\ userPerms user)
+hasPrivileges (Entity _ user) perms = True
             
 
 -- | Access function to determine if a user is logged in.
